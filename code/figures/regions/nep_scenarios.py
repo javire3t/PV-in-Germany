@@ -11,11 +11,12 @@ import json
 
 import matplotlib.pyplot as plt
 import numpy as np
+import shapefile
+from matplotlib.colors import Normalize
+from matplotlib.cm import ScalarMappable
 
-from project_paths import DATA, FINAL_OUTPUTS
-from data_preparation.read_workbook import group_data, REGION_GROUPS
-from matplotlib.colors import to_rgba
-
+from project_paths import DATA, FINAL_OUTPUTS, BOUNDARIES
+from data_preparation.read_workbook import group_data, REGION_GROUPS, STATE_CODES, state_areas
 from figures.shared.plot_helpers import COLORS, figure_name, selection_slug, polygon_patch, add_polygon
 from figures.shared.map_labels import add_external_map_labels
 from project_paths import WORKBOOK
@@ -43,6 +44,11 @@ def main(definitions=None, workbook_path=WORKBOOK, metric='capacity', output=Non
     for row in rows:
         row['year'] = int(row['year'])
         row['capacity_GW'] = float(row['capacity_GW'])
+    areas = state_areas(workbook_path)
+    land_density_2045_b = {
+        row['state']: row['capacity_GW'] * 1e6 / areas[row['state']]
+        for row in rows if row['scenario'] == 'B' and row['year'] == 2045
+    }
     checks = json.loads((destination / 'validation.json').read_text(encoding='utf-8'))
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':14,'text.color':'#263238',
                          'axes.labelcolor':'#263238'})
@@ -71,19 +77,44 @@ def main(definitions=None, workbook_path=WORKBOOK, metric='capacity', output=Non
         fig=plt.figure(figsize=(14,9.5),dpi=180,facecolor='none')
         axes = fig.subplots(2, 1, sharex=True)
         fig.subplots_adjust(left=.085, right=.70, bottom=.23, top=.96, hspace=.13)
-        # Map beside the panels: which states form each region, in the line colours.
+        # Map beside the panels: 2045 scenario-B density in green, with the
+        # comparison colours retained only for region outlines and labels.
         region_map = fig.add_axes([.73, .36, .26, .48])
-        for i, (record, geometry) in enumerate(shapes):
-            polygons = [geometry['coordinates']] if geometry['type'] == 'Polygon' else geometry['coordinates']
-            for rings in polygons:
-                patch = polygon_patch(rings, to_rgba(COLORS[i], .22))
-                patch.set_edgecolor(COLORS[i])
-                patch.set_linewidth(.5)
-                add_polygon(region_map, patch)
+        density_cmap = plt.get_cmap('BuGn')
+        density_norm = Normalize(0, 1400, clip=True)
+        region_index = {state: i for i, record in enumerate(records) for state in record['members']}
+        state_reader = shapefile.Reader(str(BOUNDARIES / 'BKG_VG250/vg250_ebenen_1231/VG250_LAN.shp'))
+        try:
+            for item in state_reader.iterShapeRecords():
+                properties = item.record.as_dict()
+                if properties.get('GF') != 4:
+                    continue
+                state = next((name for name, code in STATE_CODES.items()
+                              if code == properties.get('LKZ')), None)
+                if state is None or state not in region_index:
+                    continue
+                i = region_index[state]
+                density_2045 = land_density_2045_b[state]
+                geometry = item.shape.__geo_interface__
+                polygons = ([geometry['coordinates']] if geometry['type'] == 'Polygon'
+                            else geometry['coordinates'])
+                for rings in polygons:
+                    patch = polygon_patch(rings, density_cmap(density_norm(density_2045)))
+                    patch.set_edgecolor(COLORS[i])
+                    patch.set_linewidth(.45)
+                    add_polygon(region_map, patch)
+        finally:
+            state_reader.close()
         region_map.autoscale_view()
         region_map.set_aspect('equal')
         region_map.set_axis_off()
         add_external_map_labels(region_map, shapes, [r['name'] for r, _ in shapes], COLORS, fontsize=14)
+        scalar_map = ScalarMappable(norm=density_norm, cmap=density_cmap)
+        scalar_map.set_array([])
+        colorbar = fig.colorbar(scalar_map, ax=region_map, fraction=.035, pad=.02,
+                                ticks=[0, 700, 1400])
+        colorbar.set_label('PV density, 2045 NEP B\n(kWp/km²)', fontsize=9)
+        colorbar.ax.tick_params(labelsize=8)
         chart = axes[0]
         for panel in axes:
             panel.axvspan(historical_end,2045.5,color='#FFF4E6',alpha=.18,zorder=0)

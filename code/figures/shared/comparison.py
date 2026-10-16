@@ -5,11 +5,13 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.cm import ScalarMappable
-from matplotlib.colors import Normalize, LinearSegmentedColormap, to_rgba
+from matplotlib.colors import Normalize
 from matplotlib.ticker import MaxNLocator
 
 from project_paths import settings, WORKBOOK, BKG_GEOJSON, FINAL_OUTPUTS
-from data_preparation.read_workbook import read_data, select, match_geometry, state_data, group_data, REGION_GROUPS, ALIASES, normalize
+from data_preparation.read_workbook import (read_data, select, match_geometry, state_data,
+                                             group_data, REGION_GROUPS, ALIASES, STATE_CODES,
+                                             normalize)
 from figures.shared.plot_helpers import polygon_patch, add_polygon, COLORS, figure_name, selection_slug
 from figures.shared.map_labels import add_external_map_labels
 from figures.shared.source_credits import source_lines, add_source_footer, is_partial_year
@@ -30,10 +32,12 @@ def main():
     geojson=json.loads(BKG_GEOJSON.read_text(encoding='utf-8'))
     if args.groups:
         records,densities,available,matched=group_data(args.workbook,args.groups)
+        _,map_densities,_,map_matched=state_data(args.workbook,list(STATE_CODES))
         scale='regions'
     elif args.states:
         names=[ALIASES.get(normalize(name),name) for name in args.states]
         records,densities,available,matched=state_data(args.workbook,names)
+        map_densities,map_matched=densities,matched
         scale='states'
     else:
         records,available=read_data(args.workbook,'capacity')
@@ -41,6 +45,7 @@ def main():
         densities,_=read_data(args.workbook,'density')
         densities=select(densities,[],args.districts)
         matched=match_geometry(records,geojson)
+        map_densities,map_matched=densities,matched
         scale='districts'
     if len(records)!=2 or records[0]['name']==records[1]['name']:parser.error('Choose two distinct regions.')
     years=[y for y in available if args.start<=y<=(args.end or max(available))]
@@ -67,12 +72,17 @@ def main():
     ax.yaxis.set_major_locator(MaxNLocator(nbins=6))
     ax.grid(color='#CFD8DC',alpha=.5,lw=.7)
     ax.legend(loc='upper left',frameon=False)
-    cmap=LinearSegmentedColormap.from_list('density',['#FFF8E7','#F5C36A','#D77A48','#8F3340'])
-    norm=Normalize(0,max(float(final_density.max()),1))
+    # Use the national density-map palette and fixed ceiling for every static
+    # comparison. The comparison colours remain reserved for the outlines,
+    # chart lines and external labels.
+    cmap=plt.get_cmap('BuGn')
+    norm=Normalize(0,780,clip=True)
     record_index={r['name']:i for i,r in enumerate(records)}
-    for r,geometry in matched:
-        i=record_index[r['name']]
-        color=to_rgba(COLORS[i],.22) if args.groups else cmap(norm(final_density[i]))
+    region_index={state:i for i,record in enumerate(records) for state in record.get('members', [])}
+    map_density_by_name={r['name']:r['values'][year] for r in map_densities}
+    for r,geometry in map_matched:
+        i=region_index.get(r['name'], record_index.get(r['name']))
+        color=cmap(norm(map_density_by_name[r['name']])) if args.groups else cmap(norm(final_density[i]))
         polygons=[geometry['coordinates']] if geometry['type']=='Polygon' else geometry['coordinates']
         for rings in polygons:
             patch=polygon_patch(rings,color)
@@ -82,10 +92,9 @@ def main():
     labels=[f"{r['name']}\n{density_by_name[r['name']]:,.1f} kWp/km²" for r,_ in matched]
     add_external_map_labels(map_ax,matched,labels,[COLORS[record_index[r['name']]] for r,_ in matched],fontsize=12)
     map_ax.set_title(f'Map: capacity density\n{year}',fontsize=12,pad=48)
-    if not args.groups:
-        cax=fig.add_axes([.958,.36,.012,.43])
-        bar=fig.colorbar(ScalarMappable(norm=norm,cmap=cmap),cax=cax)
-        bar.ax.set_title('kWp/km²',fontsize=10,pad=10);bar.ax.tick_params(labelsize=10)
+    cax=fig.add_axes([.958,.36,.012,.43])
+    bar=fig.colorbar(ScalarMappable(norm=norm,cmap=cmap),cax=cax)
+    bar.ax.set_title('kWp/km²',fontsize=10,pad=10);bar.ax.tick_params(labelsize=10)
     title='Installed photovoltaic capacity — '+' vs '.join(r['name'] for r in records)
     add_source_footer(fig,source_lines(reference_year=year,boundaries=True,geojson=geojson,areas=bool(args.states or args.groups)),
                       title=title+'\nHistorical capacity and latest-year map density',fontsize=11)
