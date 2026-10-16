@@ -1,0 +1,13 @@
+{
+  "records": 6570255,
+  "active_units": 6403738,
+  "gross_kWp": 130901193.3900064,
+  "gross_kWp_Gebäudesolaranlage": 82284759.03499776,
+  "commissioned_by_ec_kWp": 130261159.14100641,
+  "gross_kWp_Freiflächensolaranlage": 46881501.60699999,
+  "gross_kWp_Sonstige Solaranlage": 58219.59200000001,
+  "gross_kWp_Steckerfertige Solaranlage (sog. Balkonkraftwerk)": 1676713.156000076,
+  "commissioned_since_ec_kWp": 640034.2489999962,
+  "commissioned_since_ec_units": 41989,
+  "registered_since_ec_kWp": 1266746.7710000407
+}

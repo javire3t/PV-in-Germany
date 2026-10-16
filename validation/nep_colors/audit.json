@@ -1,0 +1,120 @@
+{
+  "source_palette": [
+    {
+      "technology": "ground_mounted",
+      "mean_RGB_error": 0.03903384735702829,
+      "p95_RGB_error": 0.2165443674018483
+    },
+    {
+      "technology": "rooftop",
+      "mean_RGB_error": 0.029622446157515712,
+      "p95_RGB_error": 0.18987419266113856
+    }
+  ],
+  "checked_rows": 2400,
+  "median_sampling_difference": 0.002587854826771532,
+  "p95_sampling_difference": 0.02226705779045233,
+  "rows_above_0_1": 3,
+  "largest_sampling_differences": [
+    {
+      "AGS": "01001",
+      "district": "Flensburg",
+      "technology": "rooftop",
+      "scenario": "B2045",
+      "saved_estimate": 3.61,
+      "core_estimate": 3.481912057521738,
+      "absolute_difference": 0.12808794247826194,
+      "core_pixels": 10
+    },
+    {
+      "AGS": "09764",
+      "district": "Memmingen",
+      "technology": "rooftop",
+      "scenario": "B2045",
+      "saved_estimate": 1.82,
+      "core_estimate": 1.9365497733958075,
+      "absolute_difference": 0.11654977339580741,
+      "core_pixels": 17
+    },
+    {
+      "AGS": "07314",
+      "district": "Ludwigshafen am Rhein",
+      "technology": "rooftop",
+      "scenario": "B2037",
+      "saved_estimate": 2.94,
+      "core_estimate": 2.8275141121562846,
+      "absolute_difference": 0.11248588784371538,
+      "core_pixels": 23
+    },
+    {
+      "AGS": "09562",
+      "district": "Erlangen",
+      "technology": "rooftop",
+      "scenario": "2024",
+      "saved_estimate": 0.66,
+      "core_estimate": 0.5785972294919091,
+      "absolute_difference": 0.08140277050809097,
+      "core_pixels": 37
+    },
+    {
+      "AGS": "09565",
+      "district": "Schwabach",
+      "technology": "rooftop",
+      "scenario": "B2045",
+      "saved_estimate": 2.04,
+      "core_estimate": 2.120887222794527,
+      "absolute_difference": 0.08088722279452698,
+      "core_pixels": 13
+    },
+    {
+      "AGS": "08421",
+      "district": "Ulm",
+      "technology": "rooftop",
+      "scenario": "2024",
+      "saved_estimate": 0.8,
+      "core_estimate": 0.7199226073642604,
+      "absolute_difference": 0.08007739263573965,
+      "core_pixels": 37
+    },
+    {
+      "AGS": "09262",
+      "district": "Passau",
+      "technology": "rooftop",
+      "scenario": "2024",
+      "saved_estimate": 0.67,
+      "core_estimate": 0.590886392785157,
+      "absolute_difference": 0.07911360721484306,
+      "core_pixels": 26
+    },
+    {
+      "AGS": "09464",
+      "district": "Hof",
+      "technology": "rooftop",
+      "scenario": "B2037",
+      "saved_estimate": 1.59,
+      "core_estimate": 1.5125736397787533,
+      "absolute_difference": 0.07742636022124683,
+      "core_pixels": 22
+    },
+    {
+      "AGS": "09262",
+      "district": "Passau",
+      "technology": "rooftop",
+      "scenario": "B2045",
+      "saved_estimate": 2.08,
+      "core_estimate": 2.0041401715086713,
+      "absolute_difference": 0.07585982849132877,
+      "core_pixels": 26
+    },
+    {
+      "AGS": "03402",
+      "district": "Emden",
+      "technology": "rooftop",
+      "scenario": "B2045",
+      "saved_estimate": 1.39,
+      "core_estimate": 1.3159470270867861,
+      "absolute_difference": 0.07405297291321378,
+      "core_pixels": 55
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+# Python environments and caches
+.venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# LaTeX build products
+latex/build/
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.fls
+*.fdb_latexmk
+
+# Local editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary exports and notebooks
+*.tmp
+*.bak
+*.swp
+
+# Large downloaded and regenerable data
+data/raw/
+data/work/

@@ -1,0 +1,17 @@
+{
+  "source_url": "https://download.marktstammdatenregister.de/Gesamtdatenexport_20261013_26.2.zip",
+  "snapshot_date": "2026-10-13",
+  "rule": "exit year = max(EEG commissioning year, 2000) + 21",
+  "operating_units": 6403738,
+  "operating_capacity_MWp": 130901.19339000639,
+  "units_without_eeg_record": 0,
+  "capacity_without_eeg_record_MWp": 0.0,
+  "units_with_unmatched_eeg_number": 0,
+  "units_stating_no_eeg_payment": 12679,
+  "units_payment_field_empty": 5184723,
+  "units_eeg_date_from_unit_date": 16,
+  "units_without_any_date": 1,
+  "counted_units": 6391058,
+  "counted_capacity_MWp": 130567.53003099999,
+  "eeg_records": 6570255
+}

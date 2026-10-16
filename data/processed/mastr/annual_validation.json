@@ -1,0 +1,138 @@
+{
+  "source_url": "https://download.marktstammdatenregister.de/Gesamtdatenexport_20261013_26.2.zip",
+  "snapshot_date": "2026-10-13",
+  "records": {
+    "records_read": 6570255,
+    "included_units": 6491244,
+    "commissioned_before_2000": 9385,
+    "excluded_status_In Planung": 69594,
+    "outside_germany": 32
+  },
+  "included_units_by_current_status": {
+    "In Betrieb": 6395998,
+    "Vorübergehend stillgelegt": 7902,
+    "Endgültig stillgelegt": 87344
+  },
+  "total_capacity_MWp": 131342.201466,
+  "capacity_MWp_by_use": {
+    "household": 36503.850655999915,
+    "commerce_services": 18098.947700000004,
+    "industry": 4939.263757000001,
+    "agriculture": 13513.962973000002,
+    "public_building": 1989.90579,
+    "other_uses": 3077.976252,
+    "ground_mounted": 46993.280154,
+    "no_information": 6225.014184000069
+  },
+  "years": {
+    "2000": {
+      "unit_count": 9327,
+      "capacity_MWp": 38.411922
+    },
+    "2001": {
+      "unit_count": 21959,
+      "capacity_MWp": 101.99831600000002
+    },
+    "2002": {
+      "unit_count": 18223,
+      "capacity_MWp": 109.46657499999998
+    },
+    "2003": {
+      "unit_count": 19799,
+      "capacity_MWp": 144.09477400000003
+    },
+    "2004": {
+      "unit_count": 47195,
+      "capacity_MWp": 651.58764
+    },
+    "2005": {
+      "unit_count": 67224,
+      "capacity_MWp": 921.6216039999999
+    },
+    "2006": {
+      "unit_count": 63901,
+      "capacity_MWp": 843.5079580000001
+    },
+    "2007": {
+      "unit_count": 76967,
+      "capacity_MWp": 1251.609601
+    },
+    "2008": {
+      "unit_count": 115453,
+      "capacity_MWp": 1974.4843750000002
+    },
+    "2009": {
+      "unit_count": 182436,
+      "capacity_MWp": 4435.094791
+    },
+    "2010": {
+      "unit_count": 258599,
+      "capacity_MWp": 7579.445355000003
+    },
+    "2011": {
+      "unit_count": 260812,
+      "capacity_MWp": 7977.587148
+    },
+    "2012": {
+      "unit_count": 174364,
+      "capacity_MWp": 6855.641879
+    },
+    "2013": {
+      "unit_count": 120041,
+      "capacity_MWp": 3134.3218679999995
+    },
+    "2014": {
+      "unit_count": 72808,
+      "capacity_MWp": 1766.3358719999997
+    },
+    "2015": {
+      "unit_count": 48179,
+      "capacity_MWp": 1417.095608
+    },
+    "2016": {
+      "unit_count": 51225,
+      "capacity_MWp": 1499.028457
+    },
+    "2017": {
+      "unit_count": 66604,
+      "capacity_MWp": 1669.2698039999996
+    },
+    "2018": {
+      "unit_count": 76031,
+      "capacity_MWp": 2955.329991
+    },
+    "2019": {
+      "unit_count": 112271,
+      "capacity_MWp": 4021.8685399999936
+    },
+    "2020": {
+      "unit_count": 188641,
+      "capacity_MWp": 5148.086257999991
+    },
+    "2021": {
+      "unit_count": 238091,
+      "capacity_MWp": 5720.316171999981
+    },
+    "2022": {
+      "unit_count": 402232,
+      "capacity_MWp": 7595.118390999943
+    },
+    "2023": {
+      "unit_count": 1106384,
+      "capacity_MWp": 15491.259219000009
+    },
+    "2024": {
+      "unit_count": 1105816,
+      "capacity_MWp": 17594.310422000028
+    },
+    "2025": {
+      "unit_count": 909394,
+      "capacity_MWp": 17402.792083000022
+    },
+    "2026": {
+      "unit_count": 677268,
+      "capacity_MWp": 13042.516843000023
+    }
+  },
+  "interpretation": "Commissioning cohorts reconstructed from the current register, using current gross capacity and current building use; not original historical capacity or energy production. Retired units included, planned units excluded. Missing/deleted records and later expansions/reclassifications may affect cohorts. Counts refer to registered generating units, not users, owners or necessarily entire plants."
+}

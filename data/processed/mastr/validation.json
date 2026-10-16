@@ -1,0 +1,31 @@
+{
+  "snapshot_date": "2026-10-13",
+  "source_url": "https://download.marktstammdatenregister.de/Gesamtdatenexport_20261013_26.2.zip",
+  "filters": "Germany; in operation; commissioned by snapshot; positive gross power",
+  "category_definition": "building includes roofs and facades; balcony and other/unknown retained separately",
+  "density_area": "BKG VG250 31 Dec 2025 land polygons, equal-area EPSG:3035",
+  "records": {
+    "records_read": 6570255,
+    "not_in_operation": 166485,
+    "district_name_fallback": 20,
+    "outside_germany": 32,
+    "unmatched_district": 3
+  },
+  "national_capacity_MWp": {
+    "building": 82284.75903499775,
+    "ground_mounted": 46881.50160699999,
+    "other_unknown": 58.21959200000001,
+    "balcony": 1676.7131560000762
+  },
+  "national_units": {
+    "building": 4852788,
+    "ground_mounted": 19829,
+    "other_unknown": 137,
+    "balcony": 1530984
+  },
+  "mapped_capacity_MWp": 130899.19059,
+  "unmatched_capacity_MWp": 2.0028,
+  "unmatched_locations_MWp": {
+    "|Hessen|Kassel": 2.0028
+  }
+}

@@ -1,0 +1,25 @@
+[project]
+name = "pv-germany"
+version = "0.1.0"
+description = "Download German PV data and generate regional maps and animated comparisons."
+authors = [{ name = "Hawi" }]
+readme = "README.md"
+requires-python = ">=3.12,<3.15"
+dependencies = [
+    "matplotlib>=3.10,<4", "numpy>=2,<3", "openpyxl>=3.1,<4",
+    "pandas>=2.2,<4", "pillow>=11,<13", "playwright>=1.50,<2", "pyshp>=3.1,<4", "pymupdf (>=1.28.2,<2.0.0)", "scipy (>=1.18.1,<2.0.0)", "opencv-python-headless (>=5.0.0.93,<6.0.0.0)", "pyproj (>=3.8.0,<4.0.0)", "xlrd (>=2.0.1)",
+]
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=8,<10"
+
+[tool.pytest.ini_options]
+testpaths = ["code/tests"]
+pythonpath = ["code"]
+
+[build-system]
+requires = ["poetry-core>=2.0,<3.0"]
+build-backend = "poetry.core.masonry.api"

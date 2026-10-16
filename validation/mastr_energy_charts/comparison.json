@@ -1,0 +1,243 @@
+{
+  "year": 2026,
+  "mastr_snapshot": "2026-10-13",
+  "energy_charts_source": "Energy-Charts.info; Last Update: 09/17/2026, 9:10 PM GMT+2",
+  "energy_charts_MWp": 129724.7,
+  "mastr_national_MWp": 130901.19338999782,
+  "mastr_mapped_MWp": 130899.19059,
+  "national_difference_MWp": 1176.4933899978205,
+  "national_difference_pct": 0.9069154833257098,
+  "unmatched_MWp": 2.0028,
+  "districts": 400,
+  "district_capacity_correlation": 0.9998073975498165,
+  "median_district_absolute_difference_pct": 0.7404977110641462,
+  "districts_within_5_pct": 394,
+  "districts_within_10_pct": 400,
+  "districts_mastr_lower": 10,
+  "top_differences": [
+    {
+      "AGS": "12061",
+      "state": "Brandenburg",
+      "district": "Dahme-Spreewald",
+      "energy_charts_MWp": 575.2,
+      "mastr_MWp": 624.972205,
+      "units": 15398,
+      "difference_MWp": 49.772204999999985,
+      "difference_pct": 8.653025904033376,
+      "absolute_difference_MWp": 49.772204999999985
+    },
+    {
+      "AGS": "01061",
+      "state": "Schleswig-Holstein",
+      "district": "Steinburg",
+      "energy_charts_MWp": 567.4,
+      "mastr_MWp": 598.3716339999999,
+      "units": 12185,
+      "difference_MWp": 30.97163399999988,
+      "difference_pct": 5.458518505463497,
+      "absolute_difference_MWp": 30.97163399999988
+    },
+    {
+      "AGS": "13075",
+      "state": "Mecklenburg-Western Pomerania",
+      "district": "Vorpommern-Greifswald",
+      "energy_charts_MWp": 906.0,
+      "mastr_MWp": 933.245883,
+      "units": 13679,
+      "difference_MWp": 27.24588300000005,
+      "difference_pct": 3.007271854304641,
+      "absolute_difference_MWp": 27.24588300000005
+    },
+    {
+      "AGS": "12069",
+      "state": "Brandenburg",
+      "district": "Potsdam-Mittelmark",
+      "energy_charts_MWp": 448.1,
+      "mastr_MWp": 473.755361,
+      "units": 20644,
+      "difference_MWp": 25.65536099999997,
+      "difference_pct": 5.725365097076539,
+      "absolute_difference_MWp": 25.65536099999997
+    },
+    {
+      "AGS": "05162",
+      "state": "North Rhine-Westphalia",
+      "district": "Rhein-Kreis Neuss",
+      "energy_charts_MWp": 423.3,
+      "mastr_MWp": 447.123435,
+      "units": 31323,
+      "difference_MWp": 23.82343499999996,
+      "difference_pct": 5.628026222537199,
+      "absolute_difference_MWp": 23.82343499999996
+    },
+    {
+      "AGS": "12064",
+      "state": "Brandenburg",
+      "district": "Märkisch-Oderland",
+      "energy_charts_MWp": 1481.8,
+      "mastr_MWp": 1504.9745310000005,
+      "units": 17494,
+      "difference_MWp": 23.17453100000057,
+      "difference_pct": 1.5639445944122399,
+      "absolute_difference_MWp": 23.17453100000057
+    },
+    {
+      "AGS": "08335",
+      "state": "Baden-Württemberg",
+      "district": "Konstanz",
+      "energy_charts_MWp": 472.9,
+      "mastr_MWp": 495.787165,
+      "units": 24353,
+      "difference_MWp": 22.88716500000004,
+      "difference_pct": 4.839747303869749,
+      "absolute_difference_MWp": 22.88716500000004
+    },
+    {
+      "AGS": "09278",
+      "state": "Bavaria",
+      "district": "Straubing-Bogen",
+      "energy_charts_MWp": 876.7,
+      "mastr_MWp": 898.788538,
+      "units": 21619,
+      "difference_MWp": 22.08853799999997,
+      "difference_pct": 2.519509296224475,
+      "absolute_difference_MWp": 22.08853799999997
+    },
+    {
+      "AGS": "05362",
+      "state": "North Rhine-Westphalia",
+      "district": "Rhein-Erft-Kreis",
+      "energy_charts_MWp": 491.7,
+      "mastr_MWp": 513.678412,
+      "units": 31974,
+      "difference_MWp": 21.97841199999999,
+      "difference_pct": 4.469882448647548,
+      "absolute_difference_MWp": 21.97841199999999
+    },
+    {
+      "AGS": "08128",
+      "state": "Baden-Württemberg",
+      "district": "Main-Tauber-Kreis",
+      "energy_charts_MWp": 618.1,
+      "mastr_MWp": 639.423208,
+      "units": 19449,
+      "difference_MWp": 21.323208000000022,
+      "difference_pct": 3.4497990616405145,
+      "absolute_difference_MWp": 21.323208000000022
+    }
+  ],
+  "states": [
+    {
+      "state": "Baden-Württemberg",
+      "energy_charts_MWp": 16136.5,
+      "mastr_MWp": 16340.360337,
+      "difference_MWp": 203.86033699999973,
+      "difference_pct": 1.263349158739502
+    },
+    {
+      "state": "Bavaria",
+      "energy_charts_MWp": 34486.2,
+      "mastr_MWp": 34719.288647,
+      "difference_MWp": 233.0886470000006,
+      "difference_pct": 0.6758896225156747
+    },
+    {
+      "state": "Berlin",
+      "energy_charts_MWp": 567.6,
+      "mastr_MWp": 575.4434929999998,
+      "difference_MWp": 7.843492999999739,
+      "difference_pct": 1.3818698026778962
+    },
+    {
+      "state": "Brandenburg",
+      "energy_charts_MWp": 10123.1,
+      "mastr_MWp": 10253.612815,
+      "difference_MWp": 130.5128150000005,
+      "difference_pct": 1.2892573915105106
+    },
+    {
+      "state": "Bremen",
+      "energy_charts_MWp": 215.8,
+      "mastr_MWp": 222.96863899999997,
+      "difference_MWp": 7.168638999999963,
+      "difference_pct": 3.321890176088954
+    },
+    {
+      "state": "Hamburg",
+      "energy_charts_MWp": 303.9,
+      "mastr_MWp": 308.77001,
+      "difference_MWp": 4.870010000000036,
+      "difference_pct": 1.602504113195142
+    },
+    {
+      "state": "Hesse",
+      "energy_charts_MWp": 5996.1,
+      "mastr_MWp": 6070.586544,
+      "difference_MWp": 74.48654399999987,
+      "difference_pct": 1.2422498624105647
+    },
+    {
+      "state": "Lower Saxony",
+      "energy_charts_MWp": 11594.3,
+      "mastr_MWp": 11686.75386,
+      "difference_MWp": 92.45385999999992,
+      "difference_pct": 0.7974078642091366
+    },
+    {
+      "state": "Mecklenburg-Western Pomerania",
+      "energy_charts_MWp": 5496.1,
+      "mastr_MWp": 5529.404423,
+      "difference_MWp": 33.30442299999976,
+      "difference_pct": 0.6059646476592448
+    },
+    {
+      "state": "North Rhine-Westphalia",
+      "energy_charts_MWp": 15751.0,
+      "mastr_MWp": 15941.371144,
+      "difference_MWp": 190.37114399999984,
+      "difference_pct": 1.208628937845215
+    },
+    {
+      "state": "Rhineland-Palatinate",
+      "energy_charts_MWp": 6572.9,
+      "mastr_MWp": 6635.512122,
+      "difference_MWp": 62.6121220000005,
+      "difference_pct": 0.9525798658126626
+    },
+    {
+      "state": "Saarland",
+      "energy_charts_MWp": 1295.1,
+      "mastr_MWp": 1305.267224,
+      "difference_MWp": 10.167223999999976,
+      "difference_pct": 0.7850532005250542
+    },
+    {
+      "state": "Saxony",
+      "energy_charts_MWp": 5965.9,
+      "mastr_MWp": 5969.844841,
+      "difference_MWp": 3.9448410000008494,
+      "difference_pct": 0.06612314990195695
+    },
+    {
+      "state": "Saxony-Anhalt",
+      "energy_charts_MWp": 6312.5,
+      "mastr_MWp": 6344.528868,
+      "difference_MWp": 32.02886800000003,
+      "difference_pct": 0.5073880079207925
+    },
+    {
+      "state": "Schleswig-Holstein",
+      "energy_charts_MWp": 5370.7,
+      "mastr_MWp": 5439.560979999999,
+      "difference_MWp": 68.86097999999978,
+      "difference_pct": 1.2821602398197587
+    },
+    {
+      "state": "Thuringia",
+      "energy_charts_MWp": 3537.0,
+      "mastr_MWp": 3555.916643,
+      "difference_MWp": 18.916642999999848,
+      "difference_pct": 0.5348216850438181
+    }
+  ]
+}

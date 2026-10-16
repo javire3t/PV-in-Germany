@@ -1,0 +1,44 @@
+[
+  {
+    "scenario": "A",
+    "year": 2037,
+    "land_sum_GW": 269.9,
+    "published_total_GW": 270.0,
+    "rounding_difference_GW": -0.1
+  },
+  {
+    "scenario": "B",
+    "year": 2037,
+    "land_sum_GW": 345.5,
+    "published_total_GW": 345.4,
+    "rounding_difference_GW": 0.1
+  },
+  {
+    "scenario": "C",
+    "year": 2037,
+    "land_sum_GW": 379.9,
+    "published_total_GW": 379.9,
+    "rounding_difference_GW": 0.0
+  },
+  {
+    "scenario": "A",
+    "year": 2045,
+    "land_sum_GW": 314.9,
+    "published_total_GW": 315.0,
+    "rounding_difference_GW": -0.1
+  },
+  {
+    "scenario": "B",
+    "year": 2045,
+    "land_sum_GW": 400.1,
+    "published_total_GW": 400.0,
+    "rounding_difference_GW": 0.1
+  },
+  {
+    "scenario": "C",
+    "year": 2045,
+    "land_sum_GW": 439.6,
+    "published_total_GW": 440.0,
+    "rounding_difference_GW": -0.4
+  }
+]
