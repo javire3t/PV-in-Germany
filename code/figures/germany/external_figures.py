@@ -12,6 +12,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
+from matplotlib.patches import FancyArrowPatch
 
 from project_paths import FINAL_OUTPUTS, INTERMEDIATE_OUTPUTS
 from figures.shared.plot_helpers import figure_name
@@ -23,16 +24,29 @@ WORK = INTERMEDIATE_OUTPUTS / "external_figures"
 SOURCE = "Energy-Charts.info; values checked against the selected chart view"
 
 MIX_TOTAL = 497.5
+# Energy-Charts' 2025 total view reports an energetically corrected total of
+# 497.5 TWh.  The displayed source series sum to 494.68 TWh; the difference
+# is included in the explicit Others slice rather than left as an unnamed
+# residual.  Others contains the small source categories listed below.
 MIX = [
     ("Waste renewable", 4.23, "#513000"), ("Hydro run-of-river", 15.43, "#1409cc"),
     ("Biomass grid feed-in", 36.06, "#2c962a"), ("Biomass self-consumption", 4.36, "#4cc75c"),
     ("Wind offshore", 26.07, "#9daf90"), ("Wind onshore", 105.10, "#c3d6b6"),
     ("Solar EEG grid feed-in", 67.94, "#facc5b"), ("Solar self-consumption", 19.84, "#fcea66"),
-    ("Lignite grid feed-in", 67.13, "#978168"), ("Hard coal grid feed-in", 26.16, "#323232"),
-    ("Coal-derived gas", 4.15, "#dcc37b"), ("Gas grid feed-in", 49.49, "#f29543"),
-    ("Gas industrial own production", 29.84, "#fac778"), ("Other", 9.42, "#9882b3"),
+    ("Lignite grid feed-in", 67.19, "#978168"), ("Hard coal grid feed-in", 26.60, "#323232"),
+    ("Coal-derived gas", 4.15, "#dcc37b"), ("Gas grid feed-in", 49.54, "#f29543"),
+    ("Gas industrial own production", 29.78, "#fac778"),
     ("Waste non-renewable", 4.70, "#523202"), ("Import balance", 18.81, "#78197f"),
 ]
+
+# Small official Energy-Charts series omitted from the main labels.  The
+# total-view correction is included so the plotted slices sum exactly to the
+# official 497.5 TWh centre value.
+MIX.append((
+    "Other",
+    round(MIX_TOTAL - sum(v for _, v, _ in MIX), 2),
+    "#e3e3e3",
+))
 
 POWER = [
     ("Hydro", 5.3, "#0000ae"), ("Hydro pumped storage", 9.9, "#afc8ff"),
@@ -65,46 +79,39 @@ MV_LOW, MV_MID, MV_HIGH = 4.51 - .715, 4.0, 4.51 - .358
 def _save(fig, metric, period, *, dpi=300):
     OUT.mkdir(parents=True, exist_ok=True)
     target = OUT / figure_name("germany", "all", metric, "chart", period)
-    fig.savefig(target, dpi=dpi, bbox_inches="tight", facecolor="white")
+    temporary = target.with_name(target.name + ".tmp")
+    fig.savefig(temporary, format="png", dpi=dpi, bbox_inches="tight", facecolor="white")
+    temporary.replace(target)
     plt.close(fig)
     return target
 
 
 def electricity_mix():
-    # Preserve the approved final donut once exported.
-    preserved = OUT / "Figure_electricity-mix_germany_497-5-TWh.png"
-    if preserved.exists():
-        print(f"Preserved existing electricity-mix figure: {preserved}")
-        return preserved
-
-    remainder = round(MIX_TOTAL - sum(v for _, v, _ in MIX), 2)
-    rows = MIX + [("Unlabelled remainder", remainder, "#e3e3e3")]
-    fig, ax = plt.subplots(figsize=(14, 9), dpi=300)
+    rows = MIX
+    fig, ax = plt.subplots(figsize=(14, 7.6), dpi=300)
     wedges, _ = ax.pie([v for _, v, _ in rows], colors=[c for _, _, c in rows],
-                       startangle=90, counterclock=False, radius=1,
+                       startangle=90, counterclock=False, radius=1.06,
                        wedgeprops={"width": .43, "edgecolor": "white", "linewidth": 1.5})
     labels = {1: [], -1: []}
     label_y = {
-        "Import balance": 1.48,
-        "Waste non-renewable": 1.02,
-        "Other": .56,
-        "Gas industrial own production": .10,
-        "Gas grid feed-in": -.36,
-        "Coal-derived gas": -.82,
-        "Hard coal grid feed-in": -1.18,
-        "Lignite grid feed-in": -1.54,
-        "Solar self-consumption": -1.88,
-        "Waste renewable": 1.48,
-        "Hydro run-of-river": 1.08,
-        "Biomass grid feed-in": .68,
-        "Biomass self-consumption": .28,
-        "Wind offshore": -.12,
-        "Wind onshore": -.78,
-        "Solar EEG grid feed-in": -1.58,
+        "Import balance": 1.25,
+        "Waste non-renewable": .85,
+        "Other": 1.65,
+        "Gas industrial own production": .45,
+        "Gas grid feed-in": .05,
+        "Coal-derived gas": -.35,
+        "Hard coal grid feed-in": -.75,
+        "Lignite grid feed-in": -1.15,
+        "Solar self-consumption": -1.55,
+        "Waste renewable": 1.65,
+        "Hydro run-of-river": 1.25,
+        "Biomass grid feed-in": .85,
+        "Biomass self-consumption": .45,
+        "Wind offshore": .05,
+        "Wind onshore": -.45,
+        "Solar EEG grid feed-in": -1.35,
     }
     for wedge, (name, value, color) in zip(wedges, rows):
-        if name == "Unlabelled remainder":
-            continue
         angle = np.deg2rad((wedge.theta1 + wedge.theta2) / 2)
         x, y = np.cos(angle), np.sin(angle)
         labels[1 if x >= 0 else -1].append((y, x, name, value, color))
@@ -112,13 +119,23 @@ def electricity_mix():
         items.sort(reverse=True)
         ys = [label_y[name] for _, _, name, _, _ in items]
         for y_label, (y, x, name, value, color) in zip(ys, items):
-            ax.annotate(f"{name}\n{value:.2f} TWh | {value / MIX_TOTAL:.1%}",
-                        xy=(x, y / 1.15), xytext=(1.35 * side, y_label),
-                        ha="left" if side > 0 else "right", va="center", fontsize=9,
-                        arrowprops={"arrowstyle": "-", "color": color})
-    ax.text(0, .08, "497.5", ha="center", va="center", fontsize=38, color="#555")
-    ax.text(0, -.12, "TWh", ha="center", va="center", fontsize=32, color="#555")
-    ax.set(aspect="equal", xlim=(-2.35, 2.35), ylim=(-2.05, 2.05)); ax.axis("off")
+            text_x = 1.58 * side
+            # Draw the connector independently of the text.  This fixes its
+            # endpoint at the centre of the inward-facing text edge instead
+            # of letting Matplotlib choose the top or bottom of a multiline
+            # annotation bounding box.
+            ax.add_patch(FancyArrowPatch(
+                (1.02 * x, 1.02 * y), (text_x, y_label),
+                arrowstyle="-", color=color, linewidth=1.15,
+                shrinkA=0, shrinkB=0,
+                connectionstyle=f"arc3,rad={0.12 * side}",
+            ))
+            ax.text(text_x, y_label,
+                    f"{name}\n{value:.2f} TWh | {value / MIX_TOTAL:.1%}",
+                    ha="left" if side > 0 else "right", va="center", fontsize=9)
+    ax.text(0, .12, "497.5", ha="center", va="center", fontsize=38, color="#555")
+    ax.text(0, -.18, "TWh", ha="center", va="center", fontsize=32, color="#555")
+    ax.set(aspect="equal", xlim=(-2.45, 2.45), ylim=(-1.82, 1.82)); ax.axis("off")
     target = _save(fig, "electricity-mix", "497-5-TWh", dpi=300)
     WORK.mkdir(parents=True, exist_ok=True)
     with (WORK / "electricity_mix.csv").open("w", newline="", encoding="utf-8") as handle:
@@ -162,15 +179,18 @@ def revenue_figures():
     years = np.array(sorted(FIT)); fyears = np.array(sorted(FULL)); future = np.arange(2027, 2031)
     targets = []
     fig, (ax, gap) = plt.subplots(2, 1, figsize=(10.5, 8), sharex=True, dpi=300, gridspec_kw={"height_ratios": [2.2, 1]})
-    all_years = np.arange(2010, 2031); sell = np.array([FIT[y] for y in years] + [MV_MID] * 4); retail = np.array([RETAIL[y] for y in years] + [RETAIL[2026]] * 4)
-    ax.plot(years, [RETAIL[y] for y in years], "o-", label="Household electricity price")
-    ax.plot(all_years[-5:], retail[-5:], "--", label="Price held constant")
-    ax.plot(all_years, sell, "o-", label="Selling tariff / scenario")
+    all_years = years
+    retail = np.array([RETAIL[y] for y in years])
+    sell = np.array([FIT[y] for y in years])
+    ax.plot(years, retail, "o-", color="#2f78b7",
+            label="Household electricity price")
+    ax.plot(years, sell, "o-", color="#2ca02c",
+            label="PV selling tariff")
     ax.set_ylabel("ct/kWh"); ax.grid(alpha=.3); ax.legend(fontsize=8)
-    diff = retail - sell; gap.bar(all_years, diff, color=np.where(diff >= 0, "#4a90d9", "#7fb519")); gap.axhline(0, color="black", lw=.8); gap.set(xlabel="Year", ylabel="Retail − selling\n[ct/kWh]"); gap.grid(alpha=.2)
+    diff = retail - sell; gap.bar(all_years, diff, color=np.where(diff >= 0, "#4a90d9", "#7fb519")); gap.axhline(0, color="black", lw=.8); gap.set(xlabel="Year", ylabel="Retail − selling\n[ct/kWh]"); gap.set_xticks(np.arange(2010, 2027, 2)); gap.grid(alpha=.2)
     add_source_footer(fig, ["Visualization: EIFER", "Data: Bundesnetzagentur (retrieved 16.10.2026)"],
                       title="Household electricity price and PV selling tariff")
-    targets.append(_save(fig, "selling-vs-consuming", "2010-2030"))
+    targets.append(_save(fig, "selling-vs-consuming", "2010-2026"))
 
     # Merge the tariff and revenue information into one figure.  Revenue is
     # calculated from the published tariff anchors; no flat post-support line

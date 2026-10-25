@@ -8,6 +8,7 @@ if __package__ in (None, ''):
 
 import argparse
 import json
+import shutil
 from pathlib import Path
 import matplotlib
 matplotlib.use('Agg')
@@ -132,6 +133,13 @@ def main():
     crop_file(gif)
     for path in frame_paths:
         crop_file(path)
+    # Keep presentation-ready annual PNGs alongside the GIF.  These are
+    # separate slide assets, not references to the intermediate work folder.
+    snapshots = args.output / f'snapshots_{args.metric}'
+    snapshots.mkdir(parents=True, exist_ok=True)
+    for path, year in zip(frame_paths, years):
+        snapshot = snapshots / f'Figure_{args.metric}_germany_{year}.png'
+        shutil.copy2(path, snapshot)
     # Keep the PDF preview with the other finished figures, not in work/.
     preview = args.output / f'Figure_{args.metric}-animation_germany_{years[0]}-{years[-1]}.png'
     with Image.open(frame_paths[-1]) as image:
