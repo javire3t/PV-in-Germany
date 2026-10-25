@@ -85,7 +85,9 @@ def main():
     plt.rcParams.update({'font.family': 'DejaVu Sans'})
     fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=300)
     fig.subplots_adjust(left=.025, right=.975, top=.94, bottom=.23, wspace=.12)
-    cmap, norm = plt.get_cmap('YlOrRd'), Normalize(0, 3000)
+    # Shared scale with the separate redispatch figure so the two maps are
+    # directly comparable, while remaining separate figures.
+    cmap, norm = plt.get_cmap('YlOrRd'), Normalize(0, 5000)
     for ax, year in zip(axes, [2016, 2021]):
         table = frame[frame.year.eq(year)].set_index('state')
         for record, geometry in matched:
@@ -113,6 +115,7 @@ def main():
     fig.colorbar(ScalarMappable(norm=norm, cmap=cmap), cax=cax, orientation='horizontal', label='Curtailed energy (GWh/year)')
     add_source_footer(fig,
                       ['Visualization: EIFER', 'Data: Bundesnetzagentur (retrieved 16.10.2026)'],
+                      fontsize=15,
                       title='Historical renewable and CHP curtailment by state')
     export(fig, 'Figure_curtailment-einsman_germany_2016-2021')
     print(frame[frame.state.eq('Bavaria')][['year', 'curtailment_GWh']].to_string(index=False))

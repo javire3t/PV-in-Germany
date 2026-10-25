@@ -83,9 +83,9 @@ def add_source_footer(fig, lines, center=.5, line_spacing=.022, bottom=.030, fon
     fig.subplots_adjust(bottom=max(fig.subplotpars.bottom, .14))
     visualization = next((line for line in lines if line.startswith('Visualization:')), 'Visualization: EIFER')
     data = next((line for line in lines if line.startswith('Data:')), 'Data: source not specified')
-    # A common cap prevents maps and animation frames from acquiring oversized
-    # footer text merely because their plotting canvas is physically large.
-    detail_size = min(fontsize if fontsize is not None else 8, 8)
+    # Keep source footers readable on the large map canvases while retaining a
+    # common upper bound across exported figures.
+    detail_size = min(fontsize if fontsize is not None else 10, 15)
     title_size = detail_size * 1.25
     fig.canvas.draw()
     renderer = fig.canvas.get_renderer()
@@ -117,7 +117,7 @@ def add_source_footer(fig, lines, center=.5, line_spacing=.022, bottom=.030, fon
     title_h = renderer.get_text_width_height_descent(title or '', title_props, False)[1]
     source_h = renderer.get_text_width_height_descent(visualization, detail_props, False)[1]
     data_h = renderer.get_text_width_height_descent(data, detail_props, False)[1]
-    gap_px = max(5, round(fig.dpi * .004))
+    gap_px = max(12, round(fig.dpi * .0055))
     fig_h_px = fig.get_figheight() * fig.dpi
     gap = gap_px / fig_h_px
     data_y = footer_y

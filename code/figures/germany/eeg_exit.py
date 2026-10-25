@@ -23,14 +23,10 @@ from figures.shared.plot_helpers import figure_name
 from figures.shared.source_credits import source_lines, add_source_footer
 from figures.shared.crop_exports import save_cropped
 
-# Size classes: those of the MaStR annual series (as in the additions chart) or those of PwC.
+# Size classes of the MaStR annual series, as used by the project figure.
 SCHEMES = {
     'mastr': dict(table=DATA / 'processed/mastr/pv_eeg_exit_by_year_power.csv', metric='eeg-exit',
                   classes=BANDS, labels=LABELS, colors=SIZE_COLORS),
-    'pwc': dict(table=DATA / 'processed/mastr/pv_eeg_exit_by_year_power_pwc_classes.csv',
-                metric='eeg-exit-pwc-classes', classes=['<=5', '>5-10', '>10-40', '>40-750', '>750'],
-                labels=['< 5 kW', '5 to 10 kW', '10 to 40 kW', '40 to 750 kW', '> 750 kW'],
-                colors=['#F2A7B5', '#E05A75', '#B5302F', '#6E2A26', '#111111']),
 }
 VALIDATION = DATA / 'processed/mastr/eeg_exit_validation.json'
 # Cohorts up to 2016 (exit 2037) almost all received EEG payments. For units commissioned
@@ -96,11 +92,10 @@ def draw(scheme):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--classes', choices=[*SCHEMES, 'both'], default='both',
-                        help='Size classes of the MaStR series, of PwC, or both figures (default)')
+    parser.add_argument('--classes', choices=['mastr'], default='mastr',
+                        help='Size classes of the MaStR series')
     args = parser.parse_args()
-    for scheme in SCHEMES if args.classes == 'both' else [args.classes]:
-        draw(scheme)
+    draw(args.classes)
 
 
 if __name__ == '__main__':

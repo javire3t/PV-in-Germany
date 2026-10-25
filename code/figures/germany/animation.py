@@ -97,7 +97,7 @@ def main():
     total_label=fig.text(text_x,total_y,'',ha=text_align,va='top',fontsize=23,color='#666666')
     add_source_footer(fig, source_lines(reference_year=reference_year, boundaries=True, geojson=geojson),
                       center=credits_x,
-                      fontsize=16 * .94,
+                      fontsize=15,
                       title='Photovoltaic density by district' if args.metric == 'density'
                       else 'Installed photovoltaic capacity by district')
     frame_paths=[]

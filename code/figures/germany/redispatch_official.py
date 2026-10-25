@@ -77,42 +77,40 @@ def main():
         PROCESSED / 'north_south_2023-2025.csv', index=False)
     _, _, _, matched = state_data(WORKBOOK, list(STATE_CODES))
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 11})
-    for metric, table, vmax, unit in [('GWh', mapped, 5000, 'Generation reductions (GWh/year)'),
-                                      ('share', shares, 40, 'Share of mapped generation reductions (%)')]:
-        fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=300)
-        fig.subplots_adjust(left=.025, right=.975, top=.94, bottom=.23, wspace=.12)
-        norm = Normalize(0, vmax)
-        cmap = plt.get_cmap('YlOrRd')
-        for ax, year in zip(axes, [2023, 2025]):
-            for record, geometry in matched:
-                state = record['state']
-                code = STATE_CODES[state]
-                value = table.loc[year, code]
-                for rings in polygons(geometry):
-                    patch = polygon_patch(rings, '#E0E0E0' if pd.isna(value) else cmap(norm(value)))
-                    patch.set_edgecolor('#737D80')
-                    patch.set_linewidth(.55)
-                    add_polygon(ax, patch)
-                if code in {'BE', 'HB', 'HH'}:
-                    continue
-                x, y = label_point(state, geometry)
-                label = '\n'.join(textwrap.wrap(state, 16))
-                label += '\n' + state_percent(shares.loc[year, code])
-                ax.text(x, y, label, ha='center', va='center', fontsize=8,
-                        path_effects=[pe.withStroke(linewidth=2.4, foreground='white')], color='#1C2E35')
-            ax.autoscale_view()
-            ax.set_aspect('equal')
-            ax.set_axis_off()
-            ax.set_title(str(year), fontsize=18, weight='bold', pad=10)
-            outline_regions(ax, matched)
-        cax = fig.add_axes([.27, .18, .46, .018])
-        fig.colorbar(ScalarMappable(norm=norm, cmap=cmap), cax=cax, orientation='horizontal', label=unit)
-        title = ("Redispatch reductions by state, GWh" if metric == 'GWh'
-                 else "Redispatch reductions by state, share")
-        add_source_footer(fig,
-                          ["Visualization: EIFER", "Data: SMARD (retrieved 16.10.2026)"],
-                          title=title)
-        export(fig, f'Figure_redispatch-reductions-{metric.lower()}_germany_2023-2025')
+    table, vmax, unit = mapped, 5000, 'Generation reductions (GWh/year)'
+    fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=300)
+    fig.subplots_adjust(left=.025, right=.975, top=.94, bottom=.23, wspace=.12)
+    norm = Normalize(0, vmax)
+    cmap = plt.get_cmap('YlOrRd')
+    for ax, year in zip(axes, [2023, 2025]):
+        for record, geometry in matched:
+            state = record['state']
+            code = STATE_CODES[state]
+            value = table.loc[year, code]
+            for rings in polygons(geometry):
+                patch = polygon_patch(rings, '#E0E0E0' if pd.isna(value) else cmap(norm(value)))
+                patch.set_edgecolor('#737D80')
+                patch.set_linewidth(.55)
+                add_polygon(ax, patch)
+            if code in {'BE', 'HB', 'HH'}:
+                continue
+            x, y = label_point(state, geometry)
+            label = '\n'.join(textwrap.wrap(state, 16))
+            label += '\n' + state_percent(shares.loc[year, code])
+            ax.text(x, y, label, ha='center', va='center', fontsize=8,
+                    path_effects=[pe.withStroke(linewidth=2.4, foreground='white')], color='#1C2E35')
+        ax.autoscale_view()
+        ax.set_aspect('equal')
+        ax.set_axis_off()
+        ax.set_title(str(year), fontsize=18, weight='bold', pad=10)
+        outline_regions(ax, matched)
+    cax = fig.add_axes([.27, .18, .46, .018])
+    fig.colorbar(ScalarMappable(norm=norm, cmap=cmap), cax=cax, orientation='horizontal', label=unit)
+    add_source_footer(fig,
+                      ["Visualization: EIFER", "Data: SMARD (retrieved 16.10.2026)"],
+                      fontsize=15,
+                      title="Redispatch reductions by state, GWh")
+    export(fig, 'Figure_redispatch-reductions-gwh_germany_2023-2025')
 
     lines = ['# Redispatch: resultados de la extraccion oficial', '',
              'Fecha de descarga: 15 de octubre de 2026.', '',

@@ -113,7 +113,8 @@ def create_map(matched, anchors, year, output, geojson, scale_max, dpi):
     colorbar.ax.tick_params(labelsize=16, length=0, pad=8, colors='#555555')
     colorbar.ax.set_title('kWp/km²', fontsize=16, color='#555555', pad=16)
     credits = source_lines(reference_year=year, boundaries=True, geojson=geojson)
-    add_source_footer(fig, credits, title=f'Photovoltaic density by district · {year}')
+    add_source_footer(fig, credits, fontsize=15,
+                      title=f'Photovoltaic density by district · {year}')
     texts = []
     for index, (record, geometry) in enumerate(matched):
         text = ax.text(*anchors[index], f"{record['values'][year]:.0f}", ha='center',va='center',
