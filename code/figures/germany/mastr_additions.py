@@ -34,7 +34,7 @@ def main():
     years = additions.index.to_numpy()
 
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 12})
-    fig, ax = plt.subplots(figsize=(14, 6.5), dpi=180, facecolor='none')
+    fig, ax = plt.subplots(figsize=(14, 6.5), dpi=300, facecolor='none')
     bottom = np.zeros(len(years))
     for band, label, color in zip(BANDS, LABELS, SIZE_COLORS):
         ax.bar(years, additions[band], bottom=bottom, width=.72, color=color, label=label,

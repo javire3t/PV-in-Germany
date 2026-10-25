@@ -83,7 +83,7 @@ def main():
     pd.DataFrame(checks).sort_values('year').to_csv(DATA / 'processed/redispatch/curtailment_history_total_checks.csv', index=False)
     _, _, _, matched = state_data(WORKBOOK, list(STATE_CODES))
     plt.rcParams.update({'font.family': 'DejaVu Sans'})
-    fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=220)
+    fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=300)
     fig.subplots_adjust(left=.025, right=.975, top=.94, bottom=.23, wspace=.12)
     cmap, norm = plt.get_cmap('YlOrRd'), Normalize(0, 3000)
     for ax, year in zip(axes, [2016, 2021]):

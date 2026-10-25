@@ -79,7 +79,7 @@ def main():
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 11})
     for metric, table, vmax, unit in [('GWh', mapped, 5000, 'Generation reductions (GWh/year)'),
                                       ('share', shares, 40, 'Share of mapped generation reductions (%)')]:
-        fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=220)
+        fig, axes = plt.subplots(1, 2, figsize=(14, 10), dpi=300)
         fig.subplots_adjust(left=.025, right=.975, top=.94, bottom=.23, wspace=.12)
         norm = Normalize(0, vmax)
         cmap = plt.get_cmap('YlOrRd')

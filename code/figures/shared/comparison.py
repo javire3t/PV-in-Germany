@@ -59,7 +59,7 @@ def main():
     factor=1000 if values.max()>=1000 else 1
     unit='GWp' if factor==1000 else 'MWp'
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':12,'axes.labelsize':14,'text.color':'#263238'})
-    fig=plt.figure(figsize=(14,7.15),dpi=180,facecolor='none')
+    fig=plt.figure(figsize=(14,7.15),dpi=300,facecolor='none')
     ax=fig.add_axes([.075,.28,.57,.64])
     map_ax=fig.add_axes([.71,.31,.23,.57])
     for i,r in enumerate(records):

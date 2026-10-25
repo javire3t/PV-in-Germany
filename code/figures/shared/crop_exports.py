@@ -15,6 +15,14 @@ from PIL import Image, ImageChops, ImageOps
 import numpy as np
 
 
+def save_image_atomic(image, target, **kwargs):
+    """Write an image completely before replacing an existing output file."""
+    target = Path(target)
+    temporary = target.with_name(target.name + '.tmp')
+    image.save(temporary, format='PNG', **kwargs)
+    temporary.replace(target)
+
+
 def content_box(image):
     rgba = image.convert('RGBA')
     alpha = rgba.getchannel('A')
@@ -57,15 +65,24 @@ def save_cropped(fig, target, **kwargs):
     with Image.open(buffer) as image:
         box = union_box([content_box(image)])
         cropped = padded_crop(image, box, safety_margin(box))
-        cropped.save(target, dpi=image.info.get('dpi', (fig.dpi, fig.dpi)))
+        save_image_atomic(cropped, target, dpi=image.info.get('dpi', (fig.dpi, fig.dpi)))
 
 
 def save_animation_frame(fig, target):
     """Fixed frame canvas includes captions below the plotting canvas."""
     from matplotlib.transforms import Bbox
     validate_caption_layout(fig)
-    fig.savefig(target, transparent=True,
+    # Render to memory first.  At the larger animation resolution a direct
+    # save can leave a partially written PNG if the file is inspected while
+    # the encoder is still flushing; the GIF builder must only see complete
+    # frames.
+    buffer = BytesIO()
+    fig.savefig(buffer, format='png', transparent=True,
                 bbox_inches=Bbox.from_extents(0, -3, fig.get_figwidth(), fig.get_figheight()))
+    payload = buffer.getvalue()
+    with Image.open(BytesIO(payload)) as check:
+        check.load()
+    Path(target).write_bytes(payload)
 
 
 def validate_caption_layout(fig):
@@ -95,7 +112,7 @@ def crop_file(path, margin=None):
                 return None
             cropped = padded_crop(image, box, padding)
             save_options = {'dpi': info['dpi']} if 'dpi' in info else {}
-            cropped.save(path, **save_options)
+            save_image_atomic(cropped, path, **save_options)
             return {'file': str(path), 'before': original_size, 'after': cropped.size}
         frames, durations, boxes = [], [], []
         for index in range(image.n_frames):

@@ -159,7 +159,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--year', type=int, help='Default: latest year in the workbook')
     parser.add_argument('--vmax', type=float, default=SCALE_MAX)
-    parser.add_argument('--dpi', type=int, default=180)
+    parser.add_argument('--dpi', type=int, default=300)
     parser.add_argument('--output', type=Path, default=FINAL_OUTPUTS)
     parser.add_argument('--workbook', type=Path, default=WORKBOOK)
     parser.add_argument('--boundaries', type=Path, default=BKG_GEOJSON)

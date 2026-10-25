@@ -67,7 +67,10 @@ def main():
     filename_prefix = figure_name('germany', 'all', args.metric, 'map-animation', f'{years[0]}-{years[-1]}', suffix='')
     maps_folder = INTERMEDIATE_OUTPUTS/'germany'/filename_prefix
     maps_folder.mkdir(parents=True,exist_ok=True)
-    fig = plt.figure(figsize=(19.2,10.5),dpi=100,facecolor='none')
+    # Render animation frames at presentation-quality resolution.  The GIF is
+    # still indexed colour, but its spatial resolution now matches the other
+    # exported figures.
+    fig = plt.figure(figsize=(19.2,10.5),dpi=300,facecolor='none')
     map_box, scale_left = [.275,.14,.45,.74], .69
     text_x, text_align, total_y, credits_x = .50, 'center', .915, .50
     # Leave a dedicated footer under the map for its credits.
@@ -108,16 +111,24 @@ def main():
         save_animation_frame(fig,target); frame_paths.append(target)
         print(f'Saved: {target}',flush=True)
     plt.close(fig)
-    with Image.open(frame_paths[-1]) as image:
-        palette=gif_palette(image)
     frames=[]
-    for path in frame_paths:
+    with Image.open(frame_paths[0]) as image:
+        palette_images = [image.copy()]
+    for path in frame_paths[1:]:
         with Image.open(path) as image:
-            frames.append(gif_frame(image,palette))
+            palette_images.append(image.copy())
+    palette = gif_palette(palette_images)
+    for image in palette_images:
+        frames.append(gif_frame(image,palette))
     gif=args.output/f'{filename_prefix}.gif'
     durations=[args.duration]*len(years); durations[-1]=2500
-    frames[0].save(gif,save_all=True,append_images=frames[1:],duration=durations,
+    # Write beside the destination and replace only after the complete GIF is
+    # closed.  This makes reruns safe when a previous build was interrupted.
+    temporary_gif = gif.with_suffix('.gif.tmp')
+    frames[0].save(temporary_gif, format='GIF', save_all=True,
+                   append_images=frames[1:],duration=durations,
                    disposal=2,optimize=False,transparency=255,background=255)
+    temporary_gif.replace(gif)
     crop_file(gif)
     for path in frame_paths:
         crop_file(path)

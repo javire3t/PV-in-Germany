@@ -67,9 +67,28 @@ def add_polygon(ax, patch):
     return patch
 
 
-def gif_palette(image):
-    """Reserve a shared palette entry for the transparent animation canvas."""
-    palette = image.convert('RGB').quantize(colors=255)
+def gif_palette(images):
+    """Build one palette from representative samples of every animation frame.
+
+    A palette made from only the final frame can quantize earlier maps poorly,
+    especially when the spatial distribution changes over time.  Small samples
+    keep palette construction cheap while preserving the colours used across
+    the whole animation.
+    """
+    if isinstance(images, Image.Image):
+        images = [images]
+    samples = []
+    for image in images:
+        sample = image.convert('RGB').copy()
+        sample.thumbnail((256, 256), Image.Resampling.BILINEAR)
+        samples.append(sample)
+    width = max(image.width for image in samples)
+    contact = Image.new('RGB', (width, sum(image.height for image in samples)), 'white')
+    y = 0
+    for sample in samples:
+        contact.paste(sample, (0, y))
+        y += sample.height
+    palette = contact.quantize(colors=255, method=Image.Quantize.MEDIANCUT)
     colors = palette.getpalette()
     palette.putpalette(colors[:765] + colors[:3])
     return palette

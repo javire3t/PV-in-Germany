@@ -52,7 +52,7 @@ def save_maps(records, years, unit, output, metric, boundary_path, vmax, scope):
                      extend='max' if vmax is not None and max(finite) > vmax else 'neither')
         fig.tight_layout(rect=(0,.15,1,1))
         add_source_footer(fig, source_lines(reference_year=max(years), boundaries=True, geojson=geojson))
-        save_cropped(fig, output / figure_name('districts', scope, metric, 'map', year), dpi=180)
+        save_cropped(fig, output / figure_name('districts', scope, metric, 'map', year), dpi=300)
         plt.close(fig)
 
 def main():

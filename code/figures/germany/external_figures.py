@@ -62,7 +62,7 @@ YIELD = 2 * 850
 MV_LOW, MV_MID, MV_HIGH = 4.51 - .715, 4.0, 4.51 - .358
 
 
-def _save(fig, metric, period, *, dpi=180):
+def _save(fig, metric, period, *, dpi=300):
     OUT.mkdir(parents=True, exist_ok=True)
     target = OUT / figure_name("germany", "all", metric, "chart", period)
     fig.savefig(target, dpi=dpi, bbox_inches="tight", facecolor="white")
@@ -79,7 +79,7 @@ def electricity_mix():
 
     remainder = round(MIX_TOTAL - sum(v for _, v, _ in MIX), 2)
     rows = MIX + [("Unlabelled remainder", remainder, "#e3e3e3")]
-    fig, ax = plt.subplots(figsize=(14, 9), dpi=180)
+    fig, ax = plt.subplots(figsize=(14, 9), dpi=300)
     wedges, _ = ax.pie([v for _, v, _ in rows], colors=[c for _, _, c in rows],
                        startangle=90, counterclock=False, radius=1,
                        wedgeprops={"width": .43, "edgecolor": "white", "linewidth": 1.5})
@@ -119,7 +119,7 @@ def electricity_mix():
     ax.text(0, .08, "497.5", ha="center", va="center", fontsize=38, color="#555")
     ax.text(0, -.12, "TWh", ha="center", va="center", fontsize=32, color="#555")
     ax.set(aspect="equal", xlim=(-2.35, 2.35), ylim=(-2.05, 2.05)); ax.axis("off")
-    target = _save(fig, "electricity-mix", "497-5-TWh", dpi=250)
+    target = _save(fig, "electricity-mix", "497-5-TWh", dpi=300)
     WORK.mkdir(parents=True, exist_ok=True)
     with (WORK / "electricity_mix.csv").open("w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle); writer.writerow(["source", "TWh", "share"])
@@ -135,7 +135,7 @@ def installed_power():
         print(f"Preserved existing installed-power figure: {preserved}")
         return preserved
 
-    fig, ax = plt.subplots(figsize=(12, 8), dpi=180)
+    fig, ax = plt.subplots(figsize=(12, 8), dpi=300)
     names = [n for n, _, _ in POWER][::-1]; values = [v for _, v, _ in POWER][::-1]
     colors = [c for _, _, c in POWER][::-1]
     bars = ax.barh(names, values, color=colors, zorder=3)
@@ -147,7 +147,7 @@ def installed_power():
         ax.spines[spine].set_visible(False)
     add_source_footer(fig, ["Visualization: EIFER", "Data: Energy-Charts.info (retrieved 16.10.2026)"],
                       title="Installed electricity capacity by technology, Germany, 2026")
-    target = _save(fig, "installed-power", "2026", dpi=250)
+    target = _save(fig, "installed-power", "2026", dpi=300)
     with (WORK / "installed_power_2025.csv").open("w", newline="", encoding="utf-8") as handle:
         WORK.mkdir(parents=True, exist_ok=True)
         writer = csv.writer(handle); writer.writerow(["technology", "GW", "year"]); writer.writerows((n, v, 2026) for n, v, _ in POWER)
@@ -161,7 +161,7 @@ def _revenue(value):
 def revenue_figures():
     years = np.array(sorted(FIT)); fyears = np.array(sorted(FULL)); future = np.arange(2027, 2031)
     targets = []
-    fig, (ax, gap) = plt.subplots(2, 1, figsize=(10.5, 8), sharex=True, dpi=180, gridspec_kw={"height_ratios": [2.2, 1]})
+    fig, (ax, gap) = plt.subplots(2, 1, figsize=(10.5, 8), sharex=True, dpi=300, gridspec_kw={"height_ratios": [2.2, 1]})
     all_years = np.arange(2010, 2031); sell = np.array([FIT[y] for y in years] + [MV_MID] * 4); retail = np.array([RETAIL[y] for y in years] + [RETAIL[2026]] * 4)
     ax.plot(years, [RETAIL[y] for y in years], "o-", label="Household electricity price")
     ax.plot(all_years[-5:], retail[-5:], "--", label="Price held constant")
@@ -182,7 +182,7 @@ def revenue_figures():
     full_tariff = np.array([FULL[y] for y in full_years])
     full_revenue = np.array([_revenue(v) for v in full_tariff])
 
-    fig, (tariff_ax, revenue_ax) = plt.subplots(2, 1, figsize=(10.5, 8), sharex=True, dpi=180)
+    fig, (tariff_ax, revenue_ax) = plt.subplots(2, 1, figsize=(10.5, 8), sharex=True, dpi=300)
     tariff_ax.plot(revenue_years, partial_tariff, "o-", color="#2a6f97", lw=2, label="Partial feed-in tariff")
     tariff_ax.plot(full_years, full_tariff, "s--", color="#d1495b", lw=2, label="Full feed-in tariff")
     tariff_ax.set_ylabel("Tariff (ct/kWh)")

@@ -50,7 +50,7 @@ def draw(scheme):
     installed_gw = summary['operating_capacity_MWp'] / 1000
 
     plt.rcParams.update({'font.family': 'DejaVu Sans', 'font.size': 12})
-    fig, (top, bottom) = plt.subplots(2, 1, sharex=True, figsize=(13, 10), dpi=180, facecolor='none')
+    fig, (top, bottom) = plt.subplots(2, 1, sharex=True, figsize=(13, 10), dpi=300, facecolor='none')
     fig.subplots_adjust(left=.09, right=.90, bottom=.2, top=.97, hspace=.12)
     for ax, frame, ylabel in ((top, units, 'Units without EEG payment\n(million, cumulative)'),
                               (bottom, capacity, 'Capacity without EEG payment\n(GWp, cumulative)')):

@@ -74,7 +74,7 @@ def main(definitions=None, workbook_path=WORKBOOK, metric='capacity', output=Non
             future[scenario] = np.array(values)
         with (destination/f'{definition}_ABC.csv').open('w',encoding='utf-8-sig',newline='') as file:
             writer=csv.DictWriter(file,fieldnames=list(exported[0])); writer.writeheader(); writer.writerows(exported)
-        fig=plt.figure(figsize=(14,9.5),dpi=180,facecolor='none')
+        fig=plt.figure(figsize=(14,9.5),dpi=300,facecolor='none')
         axes = fig.subplots(2, 1, sharex=True)
         fig.subplots_adjust(left=.085, right=.70, bottom=.23, top=.96, hspace=.13)
         # Map beside the panels: 2045 scenario-B density in green, with the
