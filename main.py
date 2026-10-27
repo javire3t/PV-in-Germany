@@ -51,7 +51,7 @@ def region_comparisons(*args):
 
 
 FIGURE_TASKS = ["germany-animation", "germany-labeled-map", "nep-b-maps", "mastr-additions", "eeg-exit", "redispatch-maps", "redispatch-official",
-                "redispatch-history", "regions-nep", "region-comparisons", "state-charts", "pair-comparisons", "external-figures"]
+                "redispatch-history", "regions-nep", "region-definition-maps", "region-comparisons", "state-charts", "pair-comparisons", "external-figures"]
 
 
 def all_figures(*args):
@@ -112,6 +112,8 @@ TASKS = {
                          lambda *a: run("data_preparation.redispatch_excel.prepare", "--export", *a)),
     "regions-nep": ("Figures", "East/West and North/South history with NEP A/B/C",
                     lambda *a: run("figures.regions.nep_scenarios", *a)),
+    "region-definition-maps": ("Figures", "Maps of the project's East/West and North/South state definitions",
+                               lambda *a: run("figures.regions.definition_maps", *a)),
     "region-comparisons": ("Figures", "Regional historical capacity and latest density maps", region_comparisons),
     "state-charts": ("Figures", "State capacity-versus-density scatter diagrams",
                      lambda *a: run("figures.states.charts", *a)),

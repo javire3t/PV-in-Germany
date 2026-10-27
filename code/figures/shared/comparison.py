@@ -58,14 +58,21 @@ def main():
     if not np.isfinite(final_density).all():raise ValueError('Incomplete map density values.')
     factor=1000 if values.max()>=1000 else 1
     unit='GWp' if factor==1000 else 'MWp'
+    # Keep the slide convention stable even when district selections are
+    # alphabetically ordered: Saxony-Anhalt is orange, Thuringia is blue.
+    state_colors = {'Saxony-Anhalt': COLORS[0], 'Thuringia': COLORS[1]}
+    record_colors = {
+        r['name']: state_colors.get(r.get('state'), COLORS[i])
+        for i, r in enumerate(records)
+    }
     plt.rcParams.update({'font.family':'DejaVu Sans','font.size':12,'axes.labelsize':14,'text.color':'#263238'})
     fig=plt.figure(figsize=(14,7.15),dpi=300,facecolor='none')
     ax=fig.add_axes([.075,.28,.57,.64])
     map_ax=fig.add_axes([.71,.31,.23,.57])
     for i,r in enumerate(records):
-        ax.plot(years,values[i]/factor,color=COLORS[i],lw=2.3,label=r['name'])
+        ax.plot(years,values[i]/factor,color=record_colors[r['name']],lw=2.3,label=r['name'])
         if is_partial_year(year):
-            ax.plot(year,values[i,-1]/factor,'o',mfc='white',mec=COLORS[i],mew=1.4,ms=5)
+            ax.plot(year,values[i,-1]/factor,'o',mfc='white',mec=record_colors[r['name']],mew=1.4,ms=5)
     ticks=[y for y in years if y%5==0 and year-y>=3]+[year]
     ax.set_xticks(ticks,[str(y) for y in ticks])
     ax.set(xlabel='Year',ylabel=f'Installed capacity ({unit})',xlim=(years[0]-.5,year+.5),ylim=(0,(values/factor).max()*1.12))
@@ -86,11 +93,13 @@ def main():
         polygons=[geometry['coordinates']] if geometry['type']=='Polygon' else geometry['coordinates']
         for rings in polygons:
             patch=polygon_patch(rings,color)
-            patch.set_edgecolor(COLORS[i]);patch.set_linewidth(.55)
+            patch.set_edgecolor(record_colors.get(r['name'], COLORS[i]));patch.set_linewidth(.55)
             add_polygon(map_ax,patch)
     map_ax.autoscale_view();map_ax.set_aspect('equal');map_ax.set_axis_off();map_ax.margins(.05)
     labels=[f"{r['name']}\n{density_by_name[r['name']]:,.1f} kWp/km²" for r,_ in matched]
-    add_external_map_labels(map_ax,matched,labels,[COLORS[record_index[r['name']]] for r,_ in matched],fontsize=12)
+    add_external_map_labels(map_ax,matched,labels,
+                            [record_colors.get(r['name'], COLORS[record_index[r['name']]])
+                             for r,_ in matched],fontsize=12)
     map_ax.set_title(f'Map: capacity density\n{year}',fontsize=12,pad=48)
     cax=fig.add_axes([.958,.36,.012,.43])
     bar=fig.colorbar(ScalarMappable(norm=norm,cmap=cmap),cax=cax)
